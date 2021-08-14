@@ -1,0 +1,16 @@
+import re
+string = input()
+
+pattern = r'(=|/)(?P<destination>[A-Z][A-Za-z]{2,})\1'
+
+matches = [obj.groupdict() for obj in re.finditer(pattern,string)]
+
+total_points = 0
+list_of_places = []
+if matches:
+    for match in matches:
+        total_points += len(match['destination'])
+        list_of_places.append(match['destination'])
+
+print(f"Destinations: {', '.join(list_of_places)}")
+print(f"Travel Points: {total_points}")
