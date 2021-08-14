@@ -1,0 +1,19 @@
+import re
+
+n = int(input())
+
+pattern = r'^@#+[A-Z][a-zA-Z0-9]{4,}[A-Z]@#+$'
+
+for _ in range(n):
+    barcode = input()
+    match = re.findall(pattern,barcode)
+    if match:
+        pattern_for_nums = r'\d'
+        matches_nums = re.findall(pattern_for_nums,match[0])
+        if matches_nums:
+            print(f"Product group: {''.join(matches_nums)}")
+        else:
+            print('Product group: 00')
+
+    else:
+        print('Invalid barcode')
