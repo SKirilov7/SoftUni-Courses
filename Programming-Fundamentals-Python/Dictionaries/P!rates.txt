@@ -1,0 +1,56 @@
+cities = {}
+
+command_data = input()
+
+while not command_data == 'Sail':
+    city,population,gold = command_data.split('||')
+    population = int(population)
+    gold = int(gold)
+
+    if not city in cities:
+        cities[city] = {'population': 0, 'gold': 0}
+
+    cities[city]['population'] += population
+    cities[city]['gold'] += gold
+
+    command_data = input()
+
+
+data = input()
+
+while not data == 'End':
+    current_command = data.split('=>')
+    command = current_command[0]
+    city = current_command[1]
+
+    if command == 'Plunder':
+        people = int(current_command[2])
+        gold = int(current_command[3])
+
+        cities[city]['population'] -= people
+        cities[city]['gold'] -= gold
+        print(f"{city} plundered! {gold} gold stolen, {people} citizens killed.")
+
+        if cities[city]['population'] == 0 or cities[city]['gold'] == 0:
+            print(f"{city} has been wiped off the map!")
+            cities.pop(city)
+
+    elif command == 'Prosper':
+        city = current_command[1]
+        gold = int(current_command[2])
+        if gold < 0:
+            print(f"Gold added cannot be a negative number!")
+        else:
+            cities[city]['gold'] += gold
+            print(f"{gold} gold added to the city treasury. {city} now has {cities[city]['gold']} gold.")
+
+    data = input()
+
+sorted_cities = sorted(cities.items(),key = lambda tkvp: (-tkvp[1]['gold'],tkvp[0]))
+
+print(f'Ahoy, Captain! There are {len(sorted_cities)} wealthy settlements to go to:')
+if len(sorted_cities) > 0:
+    for city,stats in sorted_cities:
+        print(f"{city} -> Population: {cities[city]['population']} citizens, Gold: {cities[city]['gold']} kg")
+else:
+    print(f"Ahoy, Captain! All targets have been plundered and destroyed!")

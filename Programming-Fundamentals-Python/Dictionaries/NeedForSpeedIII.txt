@@ -1,0 +1,56 @@
+n = int(input())
+cars = {}
+for _ in range(n):
+    car_model,mileage,fuel = input().split('|')
+    mileage = int(mileage)
+    fuel = int(fuel)
+    cars[car_model] = {'Mileage':mileage, 'Fuel':fuel}
+
+command_data = input()
+
+while not command_data == 'Stop':
+    current_command = command_data.split(' : ')
+    command = current_command[0]
+    car = current_command[1]
+
+    if command == 'Drive':
+        distance = int(current_command[2])
+        fuel = int(current_command[3])
+
+        if fuel > cars[car]['Fuel']:
+            print(f"Not enough fuel to make that ride")
+
+        else:
+            cars[car]['Mileage'] += distance
+            cars[car]['Fuel'] -= fuel
+            print(f"{car} driven for {distance} kilometers. {fuel} liters of fuel consumed.")
+
+            if cars[car]['Mileage'] >= 100_000:
+                cars.pop(car)
+                print(f"Time to sell the {car}!")
+
+    elif command == 'Refuel':
+        fuel = int(current_command[2])
+        if fuel + cars[car]['Fuel'] > 75:
+            fuel = 75 - cars[car]['Fuel']
+
+        cars[car]['Fuel'] += fuel
+        print(f"{car} refueled with {fuel} liters")
+
+    elif command == 'Revert':
+        kilometers_reversed = int(current_command[2])
+
+        if cars[car]['Mileage'] - kilometers_reversed < 10_000:
+            cars[car]['Mileage'] = 10_000
+            command_data = input()
+            continue
+
+        cars[car]['Mileage'] -= kilometers_reversed
+        print(f"{car} mileage decreased by {kilometers_reversed} kilometers")
+
+    command_data = input()
+
+sorted_cars = sorted(cars.items(),key = lambda tkvp: (-tkvp[1]['Mileage'],tkvp[0]))
+
+for car,stats in sorted_cars:
+    print(f"{car} -> Mileage: {stats['Mileage']} kms, Fuel in the tank: {stats['Fuel']} lt.")

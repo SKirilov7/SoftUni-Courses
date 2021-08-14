@@ -1,0 +1,53 @@
+n = int(input())
+
+plants = {}
+for _ in range(n):
+    plant, rarity = input().split('<->')
+
+    if plant not in plants:
+        plants[plant] = {'rarity': 0, 'rating': []}
+    plants[plant]['rarity'] += int(rarity)
+
+command_data = input()
+
+while not command_data == 'Exhibition':
+    command,info = command_data.split(': ')
+
+    if command == 'Rate':
+        plant,rating = info.split(' - ')
+        rating = int(rating)
+        if plant in plants:
+            plants[plant]['rating'].append(rating)
+        else:
+            print('error')
+
+    elif command == 'Update':
+        plant,new_rarity = info.split(' - ')
+        new_rarity = int(new_rarity)
+        if plant in plants:
+            plants[plant]['rarity'] = new_rarity
+        else:
+            print('error')
+
+    elif command == 'Reset':
+        plant = info
+        if plant in plants:
+            plants[plant]['rating'].clear()
+        else:
+            print('error')
+
+    command_data = input()
+
+
+for name,info in plants.items():
+    if not len(info['rating']) == 0:
+        avg_rating = sum(info['rating']) / len(info['rating'])
+    else:
+        avg_rating = 0
+    plants[name]['rating'] = avg_rating
+
+sorted_plants = sorted(plants.items(),key = lambda tkvp: (-tkvp[1]['rarity'],-tkvp[1]['rating']))
+
+print('Plants for the exhibition:')
+for plant,info in sorted_plants:
+    print(f"- {plant}; Rarity: {info['rarity']}; Rating: {info['rating']:.2f}")
