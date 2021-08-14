@@ -1,0 +1,20 @@
+import re
+n = int(input())
+pattern = r'^U\$(?P<username>[A-Z][a-z]{2,})U\$P@\$(?P<password>[A-Za-z]{5,}[0-9]+)P@\$$'
+
+counter_succesful_reg = 0
+for _ in range(n):
+    registration = input()
+    matches = [obj.groupdict() for obj in re.finditer(pattern,registration)]
+
+    if matches:
+        username = matches[0]['username']
+        password = matches[0]['password']
+        print(f'Registration was successful')
+        print(f"Username: {username}, Password: {password}")
+        counter_succesful_reg += 1
+
+    else:
+        print('Invalid username or password')
+
+print(f"Successful registrations: {counter_succesful_reg}")
