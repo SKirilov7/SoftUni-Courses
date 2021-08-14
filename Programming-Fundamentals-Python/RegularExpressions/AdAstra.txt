@@ -1,0 +1,13 @@
+import re
+
+string = input()
+pattern = r'(#|\|)(?P<product>[A-Za-z\s]+)\1(?P<date>\d{2}\/\d{2}\/\d{2})\1(?P<calories>[0-9]{1,4})\1'
+
+matches = [obj.groupdict() for obj in re.finditer(pattern,string)]
+
+calories = sum([int(match['calories']) for match in matches])
+
+print(f'You have food to last you for: {calories//2000} days!')
+
+for match in matches:
+    print(f"Item: {match['product']}, Best before: {match['date']}, Nutrition: {match['calories']}")
