@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter.scrolledtext import ScrolledText
 from tkinter.ttk import Combobox
+from tkinter import messagebox
 import json
 
 priority_mapper = {1: "Low",2: "Medium",3: "High"}
@@ -29,6 +30,9 @@ def create_task(name,description,priority,is_completed):
        json.dump(tasks,file)
 
 def delete_task(task):
+    answer = messagebox.askquestion("Confirm delete","Are you sure?")
+    if answer == 'no':
+        return
     task_as_obj = eval(task)
     if task:
         with open("db.txt","r+") as file:
