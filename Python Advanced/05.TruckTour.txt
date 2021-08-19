@@ -1,0 +1,33 @@
+from collections import deque
+n = int(input())
+pumps = deque()
+
+for _ in range(n):
+    fuel, km_to_next = input().split()
+    fuel = int(fuel)
+    km_to_next = int(km_to_next)
+    pumps.append([fuel,km_to_next])
+
+is_found = False
+for index in range(n):
+    starting_point = pumps.popleft()
+    current_fuel = starting_point[0] - starting_point[1]
+    if current_fuel > 0:
+        for i in range(len(pumps)):
+            next_point = pumps[i]
+            current_fuel += next_point[0]
+            current_fuel -= next_point[1]
+            if current_fuel < 0:
+                break
+
+            if i == len(pumps) - 1:
+                is_found = True
+                break
+
+
+
+    pumps.append(starting_point)
+
+    if is_found:
+        print(index)
+        break

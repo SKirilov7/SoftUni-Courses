@@ -1,0 +1,28 @@
+n = int(input())
+
+stack = []
+
+for _ in range(n):
+    command = input()
+
+    if command.startswith('1'):
+        number = int(command.split()[1])
+        stack.append(number)
+
+    elif command == '2':
+        if stack:
+            stack.pop()
+
+    elif command == '3':
+        if stack:
+            print(max(stack))
+
+    elif command == '4':
+        if stack:
+            print(min(stack))
+
+while stack:
+    if not len(stack) == 1:
+        print(stack.pop(),end = ', ')
+    else:
+        print(stack.pop())

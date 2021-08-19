@@ -1,0 +1,19 @@
+from collections import deque
+
+amount_of_food = int(input())
+
+customers_orders = deque([int(num) for num in input().split()])
+print(max(customers_orders))
+
+while customers_orders:
+    current_order = customers_orders[0]
+    if current_order <= amount_of_food:
+        amount_of_food -= current_order
+        customers_orders.popleft()
+    else:
+        break
+
+if customers_orders:
+    print(f"Orders left: {' '.join([str(num) for num in customers_orders])}")
+else:
+    print('Orders complete')

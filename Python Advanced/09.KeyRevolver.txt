@@ -1,0 +1,35 @@
+from collections import deque
+
+price_bullet = int(input())
+size_of_barrel = int(input())
+bullets = deque([int(bullet) for bullet in input().split()])
+locks = deque([int(lock) for lock in input().split()])
+price_of_intelligence = int(input())
+
+is_out_of_bullets = False
+reloading_counter = size_of_barrel
+
+while locks:
+    lock = locks[0]
+    if bullets:
+        bullet = bullets.pop()
+        price_of_intelligence -= price_bullet
+
+    else:
+        is_out_of_bullets = True
+        break
+    reloading_counter -= 1
+    if bullet <= lock:
+        print("Bang!")
+        locks.popleft()
+
+    else:
+        print("Ping!")
+    if reloading_counter == 0 and len(bullets) > 0:
+        print('Reloading!')
+        reloading_counter = size_of_barrel
+
+if is_out_of_bullets:
+    print(f"Couldn't get through. Locks left: {len(locks)}")
+else:
+    print(f"{len(bullets)} bullets left. Earned ${price_of_intelligence}")

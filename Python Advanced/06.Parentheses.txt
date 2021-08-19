@@ -1,0 +1,31 @@
+parenthesis = list(input())
+
+stack = []
+is_balanced = True
+for el in parenthesis:
+    if el in '({[':
+        stack.append(el)
+    else:
+        if not stack:
+            is_balanced = False
+            break
+        current_el = stack.pop()
+        if current_el == '(':
+            if not el == ')':
+                is_balanced = False
+                break
+
+        elif current_el == '[':
+            if not el == ']':
+                is_balanced = False
+                break
+
+        elif current_el == '{':
+            if not el == '}':
+                is_balanced = False
+                break
+
+if is_balanced:
+    print('YES')
+else:
+    print('NO')

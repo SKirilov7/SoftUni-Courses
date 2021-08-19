@@ -1,0 +1,51 @@
+from collections import deque
+
+def next_second(hour,minutes,seconds):
+    seconds += 1
+    if seconds == 60:
+        seconds = 0
+        minutes += 1
+        if minutes == 60:
+            minutes = 0
+            hour += 1
+            if hour == 24:
+                hour = 0
+    return hour,minutes,seconds
+
+
+robots = input().split(';')
+elements = deque()
+hour = [int(num) for num in input().split(':')]
+
+product = input()
+while not product == 'End':
+    elements.append(product)
+    product = input()
+
+robots_proccessing_time = {}
+available_robots = deque()
+waiting_robots = deque()
+
+if robots:
+    for robot in robots:
+        name,time = robot.split('-')
+        time = int(time)
+        robots_proccessing_time[name] = time
+        available_robots.append([name,time])
+
+while elements:
+    for index in range(len(waiting_robots)):
+        waiting_robots[index][1] -= 1
+        if waiting_robots[index][1] <= 0:
+            available_robots.append([waiting_robots[index][0],robots_proccessing_time[waiting_robots[index][0]]])
+    waiting_robots = [r for r in waiting_robots if r[1] > 0]
+    current_element = elements.popleft()
+    hour = next_second(hour[0],hour[1],hour[2])
+
+    if not available_robots:
+        elements.append(current_element)
+        continue
+
+    current_robot = available_robots.popleft()
+    print(f"{current_robot[0]} - {current_element} [{hour[0]:02d}:{hour[1]:02d}:{hour[2]:02d}]")
+    waiting_robots.append(current_robot)

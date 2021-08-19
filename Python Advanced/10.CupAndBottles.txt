@@ -1,0 +1,35 @@
+from collections import deque
+
+cups = deque([int(num) for num in input().split()])
+bottles = deque([int(num) for num in input().split()])
+
+wasted_water = 0
+
+while cups and bottles:
+    current_cup = cups.popleft()
+    current_bottle = bottles.pop()
+
+    if current_cup > current_bottle:
+        current_cup -= current_bottle
+        next_bottle = bottles.pop()
+        while current_cup > 0:
+            next_bottle -= 1
+            current_cup -= 1
+            if next_bottle == 0 and current_cup > 0:
+                if bottles:
+                    next_bottle = bottles.pop()
+                else:
+                    break
+        if next_bottle > 0:
+            wasted_water += next_bottle
+    else:
+        wasted_water += current_bottle - current_cup
+
+if bottles:
+    bottles = [str(num) for num in bottles]
+    print(f"Bottles: {' '.join(bottles)}")
+if cups:
+    cups = [str(num) for num in cups]
+    print(f"Cups: {' '.join(cups)}")
+
+print(f"Wasted litters of water: {wasted_water}")
