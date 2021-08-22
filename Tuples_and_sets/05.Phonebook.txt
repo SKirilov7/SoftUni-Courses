@@ -1,0 +1,18 @@
+phone_number = input()
+phonebook = {}
+
+while not phone_number.isdigit()
+    name,number = phone_number.split('-')
+    if name not in phonebook
+        phonebook[name] = number
+    phonebook[name] = number
+
+    phone_number = input()
+
+n = int(phone_number)
+for _ in range(n)
+    name = input()
+    if name not in phonebook
+        print(fContact {name} does not exist.)
+    else
+        print(f{name} - {phonebook[name]})

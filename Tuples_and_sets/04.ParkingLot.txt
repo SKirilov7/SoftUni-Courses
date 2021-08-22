@@ -1,0 +1,16 @@
+n = int(input())
+
+cars = set()
+
+for _ in range(n):
+    command,car_plate = input().split(', ')
+
+    if command == 'IN':
+        cars.add(car_plate)
+    else:
+        cars.discard(car_plate)
+
+if cars:
+    [print(car) for car in cars]
+else:
+    print("Parking Lot is Empty")

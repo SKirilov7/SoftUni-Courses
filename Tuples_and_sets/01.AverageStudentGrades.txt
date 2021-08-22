@@ -1,0 +1,16 @@
+students = {}
+
+number_students = int(input())
+
+for _ in range(number_students):
+    name,grade = input().split()
+    grade = float(grade)
+    if name not in students:
+        students[name] = []
+    students[name].append(grade)
+
+
+for student,grades in students.items():
+    avg_grade = sum(grades) / len(grades)
+    grades = [f"{grade:.2f}" for grade in grades]
+    print(f"{student} -> {' '.join(grades)} (avg: {avg_grade:.2f})")

@@ -1,0 +1,26 @@
+n = int(input())
+
+even_set = set()
+odd_set = set()
+
+for counter_divisions in range(n):
+    counter_divisions += 1
+    name = input()
+    ascii_sum = sum([ord(char) for char in name]) // counter_divisions
+
+    if ascii_sum % 2 == 0:
+        even_set.add(ascii_sum)
+    else:
+        odd_set.add(ascii_sum)
+
+if sum(even_set) == sum(odd_set):
+    modified_set = [str(num) for num in odd_set.union(even_set)]
+    print(', '.join(modified_set))
+
+elif sum(even_set) > sum(odd_set):
+    modified_set = [str(num) for num in odd_set.symmetric_difference(even_set)]
+    print(', '.join(modified_set))
+
+else:
+    modified_set = [str(num) for num in odd_set.difference(even_set)]
+    print(', '.join(modified_set))

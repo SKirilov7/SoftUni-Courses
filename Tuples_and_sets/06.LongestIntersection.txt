@@ -1,0 +1,23 @@
+lines_of_ranges = int(input())
+
+longest_intersection = set()
+
+for _ in range(lines_of_ranges):
+    first_set = set()
+    second_set = set()
+
+    first_start_end,second_start_end = input().split('-')
+    first_start ,first_end = first_start_end.split(',')
+    second_start,second_end = second_start_end.split(',')
+
+    for num in range(int(first_start),int(first_end)+1):
+        first_set.add(num)
+    for number in range(int(second_start),int(second_end)+1):
+        second_set.add(number)
+
+    current_intersection = first_set.intersection(second_set)
+    if len(current_intersection) > len(longest_intersection):
+        longest_intersection = current_intersection
+
+
+print(f"Longest intersection is {list(longest_intersection)} with length {len(longest_intersection)}")

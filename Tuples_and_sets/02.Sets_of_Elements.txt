@@ -1,0 +1,13 @@
+n,m = input().split()
+n = int(n)
+m = int(m)
+
+first_set = set()
+for _ in range(n):
+    first_set.add(input())
+
+second_set = set()
+for _ in range(m):
+    second_set.add(input())
+
+print('\n'.join(first_set.intersection(second_set)))
