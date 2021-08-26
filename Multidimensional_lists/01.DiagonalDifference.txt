@@ -1,0 +1,14 @@
+rows_and_cols = int(input())
+
+matrix = []
+primary_diagonal_sum = 0
+secondary_diagonal_sum = 0
+index_for_secondary = rows_and_cols - 1
+
+for row in range(rows_and_cols):
+    matrix.append([int(num) for num in input().split()])
+    primary_diagonal_sum += matrix[row][row]
+    secondary_diagonal_sum += matrix[row][index_for_secondary]
+    index_for_secondary -= 1
+
+print(abs(primary_diagonal_sum - secondary_diagonal_sum))

@@ -1,0 +1,54 @@
+def matrix_generator(rows_and_cols_num):
+    matr = []
+
+    for row in range(rows_and_cols_num):
+        matr.append([int(num) for num in input().split()])
+
+    return matr
+
+def check_if_indexes_are_valid(matr,row,col):
+    if 0 <= row < len(matr) and 0 <= col < len(matr[row]):
+        return True
+    return False
+
+
+def bombs_exploding(matr,row,col):
+    bombs_power = matr[row][col]
+    if bombs_power > 0:
+        row_index = [row - 1,row+1,row,row,row-1,row-1,row+1,row+1]
+        col_index = [col,col,col-1,col+1,col-1,col+1,col-1,col+1]
+        for index in range(len(row_index)):
+            if check_if_indexes_are_valid(matr,row_index[index],col_index[index]):
+                if not matr[row_index[index]][col_index[index]] <= 0:
+                    matr[row_index[index]][col_index[index]] -= bombs_power
+    matr[row][col] = 0
+    return matr
+
+
+
+rows_and_cols = int(input())
+
+bombs_matrix = matrix_generator(rows_and_cols)
+
+indexes_info = input().split()
+
+for indexes_list in indexes_info:
+    row_index,col_index = [int(num) for num in indexes_list.split(',')]
+    if check_if_indexes_are_valid(bombs_matrix,row_index,col_index):
+        bombs_matrix = bombs_exploding(bombs_matrix,row_index,col_index)
+
+total_count_alive = 0
+total_sum = 0
+
+for list in bombs_matrix:
+    total_count_alive += len([num for num in list if num > 0])
+    total_sum += sum([num for num in list if num > 0])
+
+print(f"Alive cells: {total_count_alive}")
+print(f"Sum: {total_sum}")
+for list in bombs_matrix:
+    print(' '.join([str(num) for num in list]))
+
+
+
+

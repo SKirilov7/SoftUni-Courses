@@ -1,0 +1,34 @@
+rows,cols = [int(num) for num in input().split()]
+
+matrix = []
+
+for row in range(rows):
+    matrix.append(input().split())
+
+command_data = input()
+
+while not command_data == 'END':
+    command = command_data.split()[0]
+    if command == 'swap' and len(command_data.split()) == 5:
+        command, first_char_row,first_char_col , second_char_row , second_char_col = command_data.split()
+        first_char_row = int(first_char_row)
+        first_char_col = int(first_char_col)
+        second_char_row = int(second_char_row)
+        second_char_col = int(second_char_col)
+
+        if first_char_row <= rows and second_char_row <= rows and second_char_col <= cols and first_char_col <= cols:
+            first_char = matrix[first_char_row][first_char_col]
+            matrix[first_char_row][first_char_col] = matrix[second_char_row][second_char_col]
+            matrix[second_char_row][second_char_col] = first_char
+            for row in matrix:
+                print(' '.join(row))
+        else:
+            print('Invalid input!')
+
+
+
+    else:
+        print("Invalid input!")
+
+    command_data = input()
+

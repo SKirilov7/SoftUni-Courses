@@ -1,0 +1,48 @@
+def matrix_generator(rows_and_cols):
+    matr = []
+    for row in range(rows_and_cols):
+        matr.append(list(input()))
+    return matr
+
+def index_validator(matr,rows,cols):
+    if 0 <= rows < len(matr) and 0 <= cols < len(matr[rows]):
+        return True
+    return False
+
+def kill_counter(matr,rows,cols):
+    kills = 0
+    rows_movement = [-2,-2,2,2,-1,-1,1,1]
+    cols_movement = [-1,1,-1,1,-2,2,-2,2]
+    for movement_index in range(len(rows_movement)):
+        row_searched = rows + rows_movement[movement_index]
+        col_searched = cols + cols_movement[movement_index]
+        if index_validator(matr,row_searched,col_searched) and matrix[row_searched][col_searched] == 'K':
+            kills += 1
+    return kills
+
+rows_cols = int(input())
+matrix = matrix_generator(rows_cols)
+
+counter_removed_knights = 0
+
+while True:
+    most_kills = 0
+    position_to_remove = []
+    for row in range(rows_cols):
+        for col in range(rows_cols):
+            if matrix[row][col] == 'K':
+                current_kills = kill_counter(matrix,row,col)
+                if most_kills < current_kills:
+                    most_kills = current_kills
+                    position_to_remove = [row,col]
+
+    if most_kills == 0:
+        break
+    matrix[position_to_remove[0]][position_to_remove[1]] = '0'
+    counter_removed_knights += 1
+
+print(counter_removed_knights)
+
+
+
+

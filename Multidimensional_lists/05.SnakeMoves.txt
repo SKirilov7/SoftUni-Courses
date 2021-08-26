@@ -1,0 +1,30 @@
+from collections import deque
+
+def matrix_generator(row_number,col_number):
+    matr = []
+    for row in range(row_number):
+        matr.append([])
+        for col in range(col_number):
+            matr[row].append(0)
+    return matr
+
+def snake_movement(matr,snake_string,row_num,col_num):
+    for row in range(row_num):
+        for col in range(col_num):
+            current_char = snake_string.popleft()
+            matr[row][col] = current_char
+            snake_string.append(current_char)
+    return matr
+
+rows,cols = [int(num) for num in input().split()]
+snake = deque(input())
+matrix = matrix_generator(rows,cols)
+
+final_matrix = snake_movement(matrix,snake,rows,cols)
+
+for row in range(len(final_matrix)):
+    if not row % 2 == 0:
+        final_matrix[row] = final_matrix[row][::-1]
+    print(''.join(final_matrix[row]))
+
+

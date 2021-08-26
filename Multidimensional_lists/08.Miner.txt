@@ -1,0 +1,86 @@
+def counter_coals(list):
+    counter = 0
+    for el in list:
+        if el == 'c':
+            counter += 1
+    return counter
+
+def matrix_generator(rows_and_cols):
+    matr = []
+    total_sum_coals = 0
+    for row in range(rows_and_cols):
+        current_list = input().split()
+        current_coals = counter_coals(current_list)
+        matr.append(current_list)
+        total_sum_coals += current_coals
+    return matr,total_sum_coals
+
+def check_if_index_is_valid(matr,row,col):
+    if 0 <= row < len(matr) and 0 <= col < len(matr[row]):
+        return True
+    return False
+
+def moving_per_commands(matr,last_indexes,command,coals,all_coals_at_field):
+    row = last_indexes[0]
+    col = last_indexes[1]
+    starting_place = matr[row][col]
+    row_after_moving = ''
+    col_after_moving = ''
+    current_index = last_indexes
+
+    if command == 'up':
+        row_after_moving = row - 1
+        col_after_moving = col
+    elif command == 'right':
+        row_after_moving = row
+        col_after_moving = col + 1
+    elif command == 'left':
+        row_after_moving = row
+        col_after_moving = col - 1
+    elif command == 'down':
+        row_after_moving = row + 1
+        col_after_moving = col
+
+    if check_if_index_is_valid(matr,row_after_moving,col_after_moving):
+        matr[row][col] = '*'
+        current_index = (row_after_moving,col_after_moving)
+        if matr[row_after_moving][col_after_moving] == 'c':
+            coals += 1
+            if coals == all_coals_at_field:
+                print(f"You collected all coals! ({row_after_moving}, {col_after_moving})")
+                exit()
+            matr[row_after_moving][col_after_moving] = 's'
+        elif matr[row_after_moving][col_after_moving] == 'e':
+            print(f"Game over! ({row_after_moving}, {col_after_moving})")
+            exit()
+        else:
+            matr[row_after_moving][col_after_moving] = 's'
+
+
+    return matr, coals,current_index
+
+
+
+
+
+
+rows_cols = int(input())
+commands = input().split()
+matrix,counter_coal = matrix_generator(rows_cols)
+coals_obtained = 0
+all_commands_made = False
+last_index = None
+
+for rows in range(rows_cols):
+    for cols in range(rows_cols):
+        if matrix[rows][cols] == 's':
+            last_index = (rows,cols)
+            for command in commands:
+                matrix,coals_obtained,last_index = moving_per_commands(matrix,last_index,command,coals_obtained,counter_coal)
+            all_commands_made = True
+            break
+    if all_commands_made:
+        break
+
+
+print(f"{counter_coal-coals_obtained} coals left. {last_index}")
