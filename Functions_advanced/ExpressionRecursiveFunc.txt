@@ -1,0 +1,10 @@
+def expression(numbers,current_result = 0,current_string = ''):
+    if len(numbers) == 0:
+        print(f'{current_string}={current_result}')
+        return
+    expression(numbers[1:],current_result + numbers[0],current_string + f'+{numbers[0]}')
+    expression(numbers[1:], current_result - numbers[0], current_string + f'-{numbers[0]}')
+
+
+nums = list(map(int, input().split(', ')))
+expression(nums)
