@@ -1,0 +1,49 @@
+UPDATE `employees`
+SET `manager_id` = 1 
+WHERE `manager_id` = 0;
+
+
+SELECT `last_name` FROM `employees`
+WHERE NOT (`manager_id` = 4 or  `manager_id` = 3);
+
+
+SELECT concat_ws(' ',`first_name`,`last_name`) AS `full_name`,
+`job_title` AS `Job Title`,
+`salary` FROM `employees`
+WHERE `salary` BETWEEN 1000 AND 1500;
+
+
+
+SELECT `first_name`,`last_name`,`manager_id`
+FROM `employees`
+WHERE `manager_id` IN (1,2,3);
+
+
+SELECT concat(`first_name`,' ',`last_name`) AS `Full_name`,
+`hire_date` FROM `employees`
+ORDER BY `hire_date` DESC;
+
+
+CREATE VIEW `v_hr_result_set` AS 
+SELECT concat(`first_name`, ' ',`last_name`) AS `Full_name`, `salary`
+FROM `employees`
+ORDER BY `department_id`;
+
+CREATE TABLE `employees_contacts`
+SELECT `first_name`,`last_name`,`department_id`
+FROM `employees`;
+
+INSERT INTO `projects`(`name`, `start_date`,`end_date`)
+SELECT concat(`first_name`,' ',`last_name`), '2002-05-06',NOW()
+FROM `employees`;
+
+
+UPDATE `employees`
+SET `last_name` = 'Brown'
+WHERE `id` = 4;
+
+
+UPDATE `employees`
+SET `salary` = `salary` * 1.1,
+	`job_title` = concat('Senior', ' ', `job_title`)
+WHERE `salary` > 1500;
