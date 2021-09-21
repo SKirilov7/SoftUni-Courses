@@ -1,0 +1,64 @@
+SELECT SUBSTRING(`first_name`,5) FROM `authors`;
+SELECT SUBSTRING(`title`,1,10) FROM `books`;
+SELECT SUBSTRING(`title` FROM 1 FOR 10) FROM `books`;
+
+SELECT `title` FROM `books`
+WHERE SUBSTRING(`title`,1,3) = 'The'
+ORDER BY ID;
+
+SELECT REPLACE(`title`,'The','***') FROM `books`
+WHERE SUBSTRING(`title`,1,3) = 'The';
+
+SELECT CHAR_LENGTH(`first_name`) FROM `authors`
+WHERE `id` = 1;
+
+SELECT `id`,LEFT(`title`,3) AS `Shorthand`
+FROM `books`; 
+
+SELECT `id`,RIGHT(`title`,3) AS `Shorthand`
+FROM `books`; 
+
+SELECT UPPER(`title`) FROM `books`;
+
+SELECT LOWER(`title`) FROM `books`;
+
+SELECT REPEAT(`first_name`,3) FROM `authors`
+WHERE `id` = 5; 
+
+SELECT REVERSE(`first_name`) FROM `authors`
+WHERE `id` = 1;
+
+SELECT LOCATE('The',`title`) FROM `books`;
+
+SELECT INSERT(`title`,1,3,'***') AS `title` FROM `books`
+WHERE SUBSTRING(`title`,1,3) = 'The';
+
+SELECT POW(5,10);
+SELECT SQRT(25);
+SELECT PI();
+SELECT ABS(-151231);
+SELECT ROUND(25.51231231,2);
+SELECT FLOOR(25.9);
+SELECT CEIL(25.1);
+SELECT SIGN(-100);
+SELECT RAND();
+
+SELECT EXTRACT(YEAR FROM `year_of_release`) FROM `books`;
+SELECT EXTRACT(DAY FROM `year_of_release`) FROM `books`;
+
+SELECT TIMESTAMPDIFF(YEAR,'1992-12-31','2006-02-21');
+
+SELECT concat(`first_name`,' ',`last_name`) AS `Full name`,
+TIMESTAMPDIFF(DAY,`born`,`died`) AS `Days Lived`
+FROM `authors`;
+
+SELECT DATE_FORMAT('2007/12/21', '%D %b %Y') AS `Date`;
+SELECT DATE_FORMAT('2005/03/28', '%D %b %Y') AS `Date`;
+
+SELECT NOW();
+
+SELECT * FROM `authors`
+WHERE `first_name` LIKE 'E%';
+
+SELECT `title` FROM `books`
+WHERE `title` LIKE '%Harry Potter%';
