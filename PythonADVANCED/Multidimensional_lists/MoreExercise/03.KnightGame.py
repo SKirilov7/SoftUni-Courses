@@ -32,7 +32,6 @@ def knight_movement_and_kills(matrix,curr_row,curr_col):
 rows_cols = int(input())
 chess_board, knight_placement = create_chess_board_and_find_knights(rows_cols)
 
-most_kills = 0
 knights_removed = 0
 while True:
     most_kills = 0
