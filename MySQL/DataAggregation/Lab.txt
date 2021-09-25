@@ -1,0 +1,68 @@
+SELECT `job_title` , COUNT(`employee_id`) AS `Number of employees`
+FROM `employees`
+GROUP BY `job_title`
+ORDER BY `Number of employees` DESC;
+
+SELECT `department_id`, ROUND(SUM(`salary`),2) AS `Total salary` 
+FROM `employees`
+GROUP BY `department_id`
+ORDER BY `department_id`;
+
+SELECT `department_id`, COUNT(`id`) AS `Number of employees`
+FROM `employees`
+GROUP BY `department_id`
+ORDER BY `department_id`,`Number of employees`;
+
+
+SELECT `department_id` , MIN(`salary`) AS `Minimal salary`
+FROM `employees`
+GROUP BY `department_id`
+HAVING `Minimal salary` > 800;
+
+USE `soft_uni`;
+SELECT `department_id`,COUNT(`salary`) AS `Salary COUNT`
+FROM `employees`
+GROUP BY `department_id`;
+
+USE `restaurant`;
+SELECT `department_id`, SUM(`salary`) AS `Total salary`
+FROM `employees`
+GROUP BY `department_id`; 
+
+SELECT`department_id`, MAX(`salary`) AS `Maximal salary`
+FROM `employees`
+GROUP BY `department_id`;
+
+USE `soft_uni`;
+SELECT `department_id`, ROUND(AVG(`salary`), 0) AS `Average salary`
+FROM `employees`
+GROUP BY `department_id`;
+
+SELECT `department_id`, SUM(`salary`) AS `Total salary`
+FROM `employees`
+GROUP BY `department_id`
+HAVING `Total salary` < 100000;
+
+USE `restaurant`;
+
+SELECT `department_id` , ROUND(AVG(`salary`),2) AS `Average salary`
+FROM `employees`
+GROUP BY `department_id`;
+
+
+SELECT `department_id`, ROUND(MIN(`salary`),2) AS `Minimal salary`
+FROM `employees`
+GROUP BY `department_id`
+HAVING `Minimal salary` > 800;
+
+SELECT COUNT(`category_id`) AS `Total count`
+FROM `products`
+WHERE `category_id` = 2 AND `price` > 8;
+
+
+SELECT `category_id` , 
+		ROUND(AVG(`price`),2) AS `Average Price`,
+		ROUND(MIN(`price`),2) AS `Cheapest Product`,
+		ROUND(MAX(`price`),2) AS `Most Expensive Product`
+        FROM `products`
+        GROUP BY `category_id`;
