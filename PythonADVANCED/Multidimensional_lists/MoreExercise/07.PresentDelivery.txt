@@ -1,0 +1,72 @@
+def create_matrix_and_find_santa(row_cols):
+    matrx = []
+    santa_pos = []
+    for row_index in range(row_cols):
+        current_col = input().split()
+        matrx.append(current_col)
+        if 'S' in current_col:
+            santa_pos = [row_index,current_col.index('S')]
+    return matrx,santa_pos
+
+
+def index_validator(r, c, rows_cols):
+    return 0 <= r < rows_cols and 0 <= c < rows_cols
+
+
+def santas_generosity(matrx,all_presents,good_kids_presents, santa_row,santa_col,row_col,oper_mapper):
+    for direction,indexes in oper_mapper.items():
+        new_row = santa_row + indexes[0]
+        new_col = santa_col + indexes[1]
+        if all_presents > 0 and matrx[new_row][new_col] == 'V':
+            good_kids_presents += 1
+            all_presents -= 1
+        elif all_presents > 0 and matrx[new_row][new_col] == 'X':
+            all_presents -= 1
+        matrx[new_row][new_col] = '-'
+    return matrx, all_presents, good_kids_presents
+
+
+operation_mapper = {
+    'up': [-1, 0],
+    'down': [1, 0],
+    'left': [0, -1],
+    'right': [0, 1]
+}
+
+number_presents = int(input())
+rows_cols = int(input())
+matrix, santa_position = create_matrix_and_find_santa(rows_cols)
+good_kids_count = len([1 for row in range(rows_cols) for col in range(rows_cols) if matrix[row][col] == 'V'])
+good_kids_given_presents = 0
+
+command = input()
+not_enough_presents = False
+while not command == "Christmas morning":
+    new_row = santa_position[0] + operation_mapper[command][0]
+    new_col = santa_position[1] + operation_mapper[command][1]
+    if not index_validator(new_row, new_col, rows_cols):
+        command = input()
+        continue
+
+    matrix[santa_position[0]][santa_position[1]] = '-'
+    if matrix[new_row][new_col] == 'V':
+        good_kids_given_presents += 1
+        number_presents -= 1
+    elif matrix[new_row][new_col] == 'C':
+        matrix, number_presents, good_kids_given_presents = santas_generosity(matrix,number_presents,good_kids_given_presents,
+                                                                            new_row,new_col,rows_cols,operation_mapper)
+
+    matrix[new_row][new_col] = 'S'
+    if number_presents <= 0:
+        if good_kids_given_presents < good_kids_count:
+            print('Santa ran out of presents!')
+        break
+    santa_position = [new_row, new_col]
+    command = input()
+
+[print(' '.join(row)) for row in matrix]
+if good_kids_given_presents < good_kids_count:
+    print(f'No presents for {abs(good_kids_given_presents - good_kids_count)} nice kid/s.')
+else:
+    print(f'Good job, Santa! {good_kids_count} happy nice kid/s.')
+

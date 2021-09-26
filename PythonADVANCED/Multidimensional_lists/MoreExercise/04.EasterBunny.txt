@@ -1,0 +1,48 @@
+def matrix_creator_and_bunny_finder(rows_cols):
+    matr = []
+    bunny = []
+    for row in range(rows_cols):
+        current_col = input().split()
+        matr.append(current_col)
+        if 'B' in current_col:
+            bunny = [row, current_col.index('B')]
+    return matr, bunny
+
+
+def index_validator(r,c,row_col_number):
+    return 0 <= r < row_col_number and 0 <= c < row_col_number
+
+
+position_mapper = {
+    'up': [-1, 0],
+    'down': [1, 0],
+    'left': [0, -1],
+    'right': [0, 1]
+}
+
+rows_cols = int(input())
+matrix, bunny_location = matrix_creator_and_bunny_finder(rows_cols)
+
+most_eggs = 0
+most_eggs_path = []
+best_direction = ''
+for direction,index_paths in position_mapper.items():
+    current_eggs_collected = 0
+    current_path = []
+    new_row = bunny_location[0] + index_paths[0]
+    new_col = bunny_location[1] + index_paths[1]
+    while index_validator(new_row,new_col,rows_cols) and not matrix[new_row][new_col] == 'X':
+        current_eggs_collected += int(matrix[new_row][new_col])
+        current_path.append([new_row,new_col])
+        new_row += index_paths[0]
+        new_col += index_paths[1]
+
+    if current_eggs_collected >= most_eggs:
+        most_eggs = current_eggs_collected
+        best_direction = direction
+        most_eggs_path = current_path
+
+print(best_direction)
+print(*most_eggs_path,sep='\n')
+print(most_eggs)
+
