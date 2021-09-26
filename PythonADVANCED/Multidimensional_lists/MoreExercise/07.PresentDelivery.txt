@@ -40,7 +40,6 @@ good_kids_count = len([1 for row in range(rows_cols) for col in range(rows_cols)
 good_kids_given_presents = 0
 
 command = input()
-not_enough_presents = False
 while not command == "Christmas morning":
     new_row = santa_position[0] + operation_mapper[command][0]
     new_col = santa_position[1] + operation_mapper[command][1]
