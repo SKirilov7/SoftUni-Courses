@@ -1,2 +1,0 @@
-sorted_nums = sorted([int(num) for num in input().split()])
-print(sorted_nums)
