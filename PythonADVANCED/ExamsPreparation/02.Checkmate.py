@@ -6,7 +6,7 @@ def queen_moving(field, q_row, q_col):
     for index in range(len(row_steps)):
         current_row, current_col = q_row + row_steps[index], q_col + col_steps[index]
         while is_valid_step(len(field), current_row, current_col):
-            if field[current_row][current_col] == 'K' and field[current_row][current_col] == 'Q':
+            if field[current_row][current_col] == 'K':
                 is_king_killed = True
                 break
             if field[current_row][current_col] == 'Q':
