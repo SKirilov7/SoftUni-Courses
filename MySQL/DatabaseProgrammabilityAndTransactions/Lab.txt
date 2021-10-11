@@ -1,0 +1,86 @@
+# TASK 1
+
+DROP FUNCTION IF EXISTS ufn_count_employees_by_town;
+DELIMITER //
+CREATE FUNCTION ufn_count_employees_by_town(town_name VARCHAR(20))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+DECLARE e_count INT;
+SET e_count := (SELECT COUNT(e.employee_id) FROM employees AS e
+				JOIN addresses AS a ON e.address_id = a.address_id
+                JOIN towns AS t ON a.town_id = t.town_id
+                WHERE t.`name` = town_name);
+RETURN e_count;
+END//
+DELIMITER ;
+
+SELECT ufn_count_employees_by_town('Berlin');
+ 
+# PRACTICE 
+
+DROP PROCEDURE IF EXISTS usp_select_employees_by_seniority;
+DELIMITER $$
+CREATE PROCEDURE usp_select_employees_by_seniority()
+BEGIN 
+SELECT * FROM employees
+WHERE ROUND((DATEDIFF(NOW(),hire_date) / 365.25)) < 25;
+END$$
+
+CALL usp_select_employees_by_seniority();
+
+
+DROP PROCEDURE IF EXISTS usp_select_employees_by_seniority;
+DELIMITER $$
+CREATE PROCEDURE usp_select_employees_by_seniority(min_years_at_work INT)
+BEGIN 
+SELECT * FROM employees
+WHERE ROUND((DATEDIFF(NOW(),hire_date) / 365.25)) < min_years_at_work;
+END$$
+DELIMITER ;
+CALL usp_select_employees_by_seniority(20);
+
+DELIMITER $$
+CREATE PROCEDURE usp_add_numbers(
+	IN first_num INT,
+	IN second_num INT,
+	OUT result INT)
+BEGIN 
+SET result = first_num + second_num;
+END$$
+DELIMITER ;
+
+SET @answer = 0;
+CALL usp_add_numbers(5,10,@answer);
+SELECT @answer;
+
+# TASK 2
+
+DROP PROCEDURE IF EXISTS usp_raise_salaries;
+DELIMITER $$
+CREATE PROCEDURE usp_raise_salaries(department_name VARCHAR(50))
+BEGIN
+	UPDATE employees AS e
+	JOIN departments AS d ON e.department_id = d.department_id
+	SET salary = salary * 1.05
+	WHERE d.`name` = department_name;
+END$$
+DELIMITER ;
+
+CALL usp_raise_salaries('Sales');
+
+
+# TASK 3
+
+DROP PROCEDURE IF EXISTS usp_raise_salary_by_id;
+DELIMITER $$
+CREATE PROCEDURE usp_raise_salary_by_id(id INT)
+BEGIN
+	IF(SELECT COUNT(employee_id) FROM employees WHERE employee_id = id) = 0
+    THEN ROLLBACK;
+    ELSE 
+		UPDATE employees 
+        SET salary = salary * 1.05
+        WHERE employee_id = id;
+	END if;
+END$$
