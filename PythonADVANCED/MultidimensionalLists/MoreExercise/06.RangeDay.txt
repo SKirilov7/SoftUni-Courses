@@ -38,6 +38,7 @@ for _ in range(number_commands):
             field[next_row][next_col] = 'A'
             player_row, player_col = next_row, next_col
 
+
     elif command == 'shoot':
         shooting_row, shooting_col = player_row + direction_mapper[direction][0],\
                                      player_col + direction_mapper[direction][1]

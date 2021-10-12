@@ -10,6 +10,7 @@ def create_matrix_and_find_santa(row_col):
     return matr, s_row, s_col, number_good_kids
 
 
+
 def santas_generosity(s_row, s_col, matrx, presents):
     good_kids_presents = 0
     for r in range(-1, 2):

@@ -33,6 +33,7 @@ while True:
         field[next_row][next_col] = '*'
         break
 
+
     if field[next_row][next_col].isdigit():
         tea_bags_collected += int(field[next_row][next_col])
     if tea_bags_collected >= 10:
