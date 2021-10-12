@@ -1,54 +1,52 @@
-def create_field_and_find_alice(row_col):
-    matrix = []
-    alice_placement = []
-    for row_index in range(row_col):
+def create_matrix_and_find_alice(row_col):
+    matrix, a_row, a_col = [], 0, 0
+    for row in range(row_col):
         current_col = input().split()
         matrix.append(current_col)
         if 'A' in current_col:
-            alice_placement = [row_index,current_col.index('A')]
-    return matrix,alice_placement
+            a_row, a_col = row, current_col.index('A')
+    return matrix, a_row, a_col
 
 
-def index_validator(r,c,row_col):
+def is_valid_index(r, c, row_col):
     return 0 <= r < row_col and 0 <= c < row_col
 
 
 movement_operator = {
-    'up': [-1, 0],
-    'down': [1, 0],
-    'left': [0, -1],
-    'right': [0, 1]
+    'up': (-1, 0),
+    'down': (1, 0),
+    'right': (0, 1),
+    'left': (0, -1)
 }
 
 rows_cols = int(input())
-field, alice_location = create_field_and_find_alice(rows_cols)
+field, alice_row, alice_col = create_matrix_and_find_alice(rows_cols)
 
 tea_bags_collected = 0
-while tea_bags_collected < 10:
+while True:
     command = input()
-    new_row = alice_location[0] + movement_operator[command][0]
-    new_col = alice_location[1] + movement_operator[command][1]
-    field[alice_location[0]][alice_location[1]] = '*'
-
-    if not index_validator(new_row,new_col,rows_cols):
-        print("Alice didn't make it to the tea party.")
+    field[alice_row][alice_col] = '*'
+    next_row, next_col = alice_row + movement_operator[command][0], alice_col + movement_operator[command][1]
+    if not is_valid_index(next_row, next_col, rows_cols):
+        break
+    if field[next_row][next_col] == 'R':
+        field[next_row][next_col] = '*'
         break
 
-    if field[new_row][new_col] == 'R':
-        print("Alice didn't make it to the tea party.")
-        field[new_row][new_col] = '*'
+    if field[next_row][next_col].isdigit():
+        tea_bags_collected += int(field[next_row][next_col])
+    if tea_bags_collected >= 10:
+        field[next_row][next_col] = '*'
         break
-    elif field[new_row][new_col].isdigit():
-        tea_bags_collected += int(field[new_row][new_col])
 
-    field[new_row][new_col] = 'A'
-    alice_location = [new_row, new_col]
+    field[next_row][next_col] = 'A'
+    alice_row, alice_col = next_row, next_col
 
-if tea_bags_collected >= 10:
-    print('She did it! She went to the party.')
-    field[alice_location[0]][alice_location[1]] = '*'
 
-[print(' '.join(row)) for row in field]
+print("She did it! She went to the party.") if tea_bags_collected >= 10 else print("Alice didn't make it to the tea party.")
+[print(*row, sep=' ') for row in field]
+
+
 
 
 

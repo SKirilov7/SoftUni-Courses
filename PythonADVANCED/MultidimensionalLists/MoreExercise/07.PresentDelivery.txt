@@ -1,71 +1,73 @@
-def create_matrix_and_find_santa(row_cols):
-    matrx = []
-    santa_pos = []
-    for row_index in range(row_cols):
+def create_matrix_and_find_santa(row_col):
+    matr, s_row, s_col, number_good_kids = [], 0, 0, 0
+    for row in range(row_col):
         current_col = input().split()
-        matrx.append(current_col)
+        matr.append(current_col)
         if 'S' in current_col:
-            santa_pos = [row_index,current_col.index('S')]
-    return matrx,santa_pos
+            s_row, s_col = row, current_col.index('S')
+        if 'V' in current_col:
+            number_good_kids += current_col.count('V')
+    return matr, s_row, s_col, number_good_kids
 
 
-def index_validator(r, c, rows_cols):
-    return 0 <= r < rows_cols and 0 <= c < rows_cols
+def santas_generosity(s_row, s_col, matrx, presents):
+    good_kids_presents = 0
+    for r in range(-1, 2):
+        for c in range(-1, 2):
+            row = s_row + r
+            col = s_col + c
+            if is_valid_index(len(matrx), row, col) and matrx[row][col] == 'V' and presents:
+                good_kids_presents += 1
+                presents -= 1
+            elif is_valid_index(len(matrx), row, col) and matrx[row][col] == 'X' and presents:
+                presents -= 1
+            matrx[row][col] = '-'
+    return good_kids_presents, presents
 
 
-def santas_generosity(matrx,all_presents,good_kids_presents, santa_row,santa_col,row_col,oper_mapper):
-    for direction,indexes in oper_mapper.items():
-        new_row = santa_row + indexes[0]
-        new_col = santa_col + indexes[1]
-        if all_presents > 0 and matrx[new_row][new_col] == 'V':
-            good_kids_presents += 1
-            all_presents -= 1
-        elif all_presents > 0 and matrx[new_row][new_col] == 'X':
-            all_presents -= 1
-        matrx[new_row][new_col] = '-'
-    return matrx, all_presents, good_kids_presents
+def is_valid_index(row_col, r, c):
+    return 0 <= r < row_col and 0 <= c < row_col
 
 
-operation_mapper = {
-    'up': [-1, 0],
-    'down': [1, 0],
-    'left': [0, -1],
-    'right': [0, 1]
+direction_mapper = {
+    'left': (0, -1),
+    'right': (0, 1),
+    'up': (-1, 0),
+    'down': (1, 0),
 }
 
 number_presents = int(input())
 rows_cols = int(input())
-matrix, santa_position = create_matrix_and_find_santa(rows_cols)
-good_kids_count = len([1 for row in range(rows_cols) for col in range(rows_cols) if matrix[row][col] == 'V'])
-good_kids_given_presents = 0
+matrix, santa_row, santa_col, good_kids_count = create_matrix_and_find_santa(rows_cols)
 
-command = input()
-while not command == "Christmas morning":
-    new_row = santa_position[0] + operation_mapper[command][0]
-    new_col = santa_position[1] + operation_mapper[command][1]
-    if not index_validator(new_row, new_col, rows_cols):
-        command = input()
-        continue
-
-    matrix[santa_position[0]][santa_position[1]] = '-'
-    if matrix[new_row][new_col] == 'V':
-        good_kids_given_presents += 1
-        number_presents -= 1
-    elif matrix[new_row][new_col] == 'C':
-        matrix, number_presents, good_kids_given_presents = santas_generosity(matrix,number_presents,good_kids_given_presents,
-                                                                            new_row,new_col,rows_cols,operation_mapper)
-
-    matrix[new_row][new_col] = 'S'
-    if number_presents <= 0:
-        if good_kids_given_presents < good_kids_count:
-            print('Santa ran out of presents!')
-        break
-    santa_position = [new_row, new_col]
+good_kids_presents_given = 0
+while number_presents:
     command = input()
+    if command == 'Christmas morning':
+        break
+    next_row, next_col = santa_row + direction_mapper[command][0], santa_col + direction_mapper[command][1]
+    if not is_valid_index(rows_cols, next_row, next_col):
+        continue
+    matrix[santa_row][santa_col] = '-'
 
-[print(' '.join(row)) for row in matrix]
-if good_kids_given_presents < good_kids_count:
-    print(f'No presents for {abs(good_kids_given_presents - good_kids_count)} nice kid/s.')
-else:
-    print(f'Good job, Santa! {good_kids_count} happy nice kid/s.')
+    if matrix[next_row][next_col] == 'V' and number_presents:
+        good_kids_presents_given += 1
+        number_presents -= 1
+    elif matrix[next_row][next_col] == 'C':
+        new_gifts_good_kids, number_presents = santas_generosity(next_row,next_col, matrix, number_presents)
+        good_kids_presents_given += new_gifts_good_kids
+
+    matrix[next_row][next_col] = 'S'
+    santa_row, santa_col = next_row, next_col
+    if number_presents == 0:
+        if good_kids_count > good_kids_presents_given:
+            print(f"Santa ran out of presents!")
+        break
+
+[print(*row) for row in matrix]
+if good_kids_count > good_kids_presents_given:
+    print(f"No presents for {abs(good_kids_presents_given - good_kids_count)} nice kid/s.")
+if good_kids_presents_given == good_kids_count:
+    print(f"Good job, Santa! {good_kids_count} happy nice kid/s.")
+
 

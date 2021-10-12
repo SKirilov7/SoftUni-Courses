@@ -1,69 +1,59 @@
-def create_matrix_and_find_player_and_targets(row_col):
-    matr = []
-    player_pos = []
-    number_of_targets = 0
-    for row_index in range(row_col):
+def create_matrix_and_find_position(row_col):
+    matrix, p_row, p_col, number_targets  = [], 0, 0, 0
+    for row in range(row_col):
         current_col = input().split()
-        matr.append(current_col)
+        matrix.append(current_col)
         if 'A' in current_col:
-            player_pos = [row_index,current_col.index('A')]
-        number_of_targets += current_col.count('x') if 'x' in current_col else 0
-    return matr, player_pos, number_of_targets
+            p_row, p_col = row, current_col.index('A')
+        if 'x' in current_col:
+            number_targets += current_col.count('x')
+    return matrix, p_row, p_col, number_targets
 
 
-def index_validator(r,c):
-    return 0 <= r < 5 and 0 <= c < 5
-
-
-def shoot(matr, curr_direction, player_r, player_c):
-    shooting_row = player_r + direction_mapper[curr_direction][0]
-    shooting_col = player_c + direction_mapper[curr_direction][1]
-    shot_target = []
-    while index_validator(shooting_row,shooting_col):
-        if matr[shooting_row][shooting_col] == 'x':
-            shot_target = [shooting_row,shooting_col]
-            matr[shooting_row][shooting_col] = '.'
-            break
-        shooting_row += direction_mapper[curr_direction][0]
-        shooting_col += direction_mapper[curr_direction][1]
-
-    return matr, shot_target
+def is_valid_index(r, c, row_col):
+    return 0 <= r < row_col and 0 <= c < row_col
 
 
 direction_mapper = {
-    'left': [0, -1],
-    'right': [0, 1],
-    'down': [1, 0],
-    'up': [-1, 0]
+    'up': (-1, 0),
+    'down': (1, 0),
+    'right': (0, 1),
+    'left': (0, -1)
 }
 
 rows_cols = 5
-matrix,player_position, number_targets = create_matrix_and_find_player_and_targets(rows_cols)
+field, player_row, player_col, targets = create_matrix_and_find_position(rows_cols)
 number_commands = int(input())
 
-targets_shot = 0
-targets_shot_location = []
+hit_targets = 0
+target_shot_position = []
 for _ in range(number_commands):
-    command_data = input().split()
-    command, direction = command_data[:2]
+    command, direction, *steps = input().split()
 
     if command == 'move':
-        steps = int(command_data[2])
-        new_row = player_position[0] + direction_mapper[direction][0] * steps
-        new_col = player_position[1] + direction_mapper[direction][1] * steps
-        if index_validator(new_row, new_col) and matrix[new_row][new_col] == '.':
-            matrix[new_row][new_col] = 'A'
-            matrix[player_position[0]][player_position[1]] = '.'
-            player_position = [new_row,new_col]
-    else:
-        matrix,current_shot_target = shoot(matrix, direction, player_position[0], player_position[1])
-        targets_shot += 1 if current_shot_target else 0
-        if current_shot_target:
-            targets_shot_location.append(current_shot_target)
-        if targets_shot == number_targets:
-            print(f"Training completed! All {number_targets} targets hit.")
+        next_row, next_col = player_row + (direction_mapper[direction][0]) * int(steps[0]),\
+                             player_col + (direction_mapper[direction][1] * int(steps[0]))
+        if is_valid_index(next_row, next_col, rows_cols) and not field[next_row][next_col] == 'x':
+            field[player_row][player_col] = '.'
+            field[next_row][next_col] = 'A'
+            player_row, player_col = next_row, next_col
+
+    elif command == 'shoot':
+        shooting_row, shooting_col = player_row + direction_mapper[direction][0],\
+                                     player_col + direction_mapper[direction][1]
+        while is_valid_index(shooting_row, shooting_col, rows_cols):
+            if field[shooting_row][shooting_col] == 'x':
+                field[shooting_row][shooting_col] = '.'
+                hit_targets += 1
+                target_shot_position.append([shooting_row, shooting_col])
+                break
+            shooting_row += direction_mapper[direction][0]
+            shooting_col += direction_mapper[direction][1]
+        if hit_targets == targets:
             break
 
-if not targets_shot == number_targets:
-    print(f"Training not completed! {abs(number_targets - targets_shot)} targets left.")
-[print(row) for row in targets_shot_location]
+print(f"Training completed! All {targets} targets hit.") if hit_targets == targets\
+    else print(f"Training not completed! {abs(hit_targets - targets)} targets left.")
+[print(shot_target) for shot_target in target_shot_position]
+
+
