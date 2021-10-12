@@ -1,21 +1,16 @@
 from collections import deque
 
 
-def best_list_pureness(*args):
-    numbers, k = deque(*args[:-1]), args[-1]
-    best_result, best_rotation, rotation = 0, 0, 0
-
-    while rotation <= k:
-        sum = 0
-        for index, number in enumerate(numbers):
-            sum += index * number
-        if sum > best_result:
-            best_result = sum
+def best_list_pureness(numbers, k):
+    numbers = deque(numbers)
+    best_result = 0
+    best_rotation = 0
+    for rotation in range(k+1):
+        current_result = sum([index * number for index, number in enumerate(numbers)])
+        if current_result > best_result:
+            best_result = current_result
             best_rotation = rotation
-        last_num = numbers.pop()
-        numbers.appendleft(last_num)
-        rotation += 1
-
+        numbers.rotate()
     return f"Best pureness {best_result} after {best_rotation} rotations"
 
 
