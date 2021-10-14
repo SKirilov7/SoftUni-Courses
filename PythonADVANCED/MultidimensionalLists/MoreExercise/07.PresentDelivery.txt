@@ -16,10 +16,10 @@ def santas_generosity(s_row, s_col, matrx, presents):
         for c in range(-1, 2):
             row = s_row + r
             col = s_col + c
-            if is_valid_index(len(matrx), row, col) and matrx[row][col] == 'V' and presents:
+            if is_valid_index(len(matrx), row, col) and matrx[row][col] == 'V' and presents > 0:
                 good_kids_presents += 1
                 presents -= 1
-            elif is_valid_index(len(matrx), row, col) and matrx[row][col] == 'X' and presents:
+            elif is_valid_index(len(matrx), row, col) and matrx[row][col] == 'X' and presents > 0:
                 presents -= 1
             matrx[row][col] = '-'
     return good_kids_presents, presents
@@ -41,7 +41,7 @@ rows_cols = int(input())
 matrix, santa_row, santa_col, good_kids_count = create_matrix_and_find_santa(rows_cols)
 
 good_kids_presents_given = 0
-while number_presents:
+while number_presents > 0:
     command = input()
     if command == 'Christmas morning':
         break
@@ -50,7 +50,7 @@ while number_presents:
         continue
     matrix[santa_row][santa_col] = '-'
 
-    if matrix[next_row][next_col] == 'V' and number_presents:
+    if matrix[next_row][next_col] == 'V':
         good_kids_presents_given += 1
         number_presents -= 1
     elif matrix[next_row][next_col] == 'C':
