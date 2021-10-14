@@ -5,6 +5,7 @@ CREATE TABLE categories(
     `name` VARCHAR(10) NOT NULL
 );
 
+
 CREATE TABLE cars(
 	id INT PRIMARY KEY AUTO_INCREMENT,
     make VARCHAR(20) NOT NULL,
