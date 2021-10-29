@@ -2,14 +2,13 @@ from project.animals.animal import Bird
 
 
 class Owl(Bird):
-
     def make_sound(self):
-        return f"Hoot Hoot"
+        return "Hoot Hoot"
 
     def feed(self, food):
-        if not food.__class__.__name__ == 'Meat':
-            return self.return_message(food)
-        self.gain_weight(0.25, food.quantity)
+        if not self.is_appropriate_food(food):
+            return self.return_error_wrong_food(food)
+        self.gain_weight(food, 0.25)
 
 
 class Hen(Bird):
@@ -17,4 +16,6 @@ class Hen(Bird):
         return "Cluck"
 
     def feed(self, food):
-        self.gain_weight(0.35, food.quantity)
+        if not self.is_appropriate_food(food):
+            self.return_error_wrong_food(food)
+        self.gain_weight(food, 0.35)
