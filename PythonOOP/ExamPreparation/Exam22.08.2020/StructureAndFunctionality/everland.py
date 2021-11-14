@@ -6,9 +6,8 @@ class Everland:
         if room.budget >= expenses:
             room.budget -= expenses
             return f"{room.family_name} paid {expenses:.2f}$ and have {room.budget:.2f}$ left."
-        else:
-            self.rooms.remove(room)
-            return f"{room.family_name} does not have enough budget and must leave the hotel."
+        self.rooms.remove(room)
+        return f"{room.family_name} does not have enough budget and must leave the hotel."
 
     def add_room(self, room):
         self.rooms.append(room)
