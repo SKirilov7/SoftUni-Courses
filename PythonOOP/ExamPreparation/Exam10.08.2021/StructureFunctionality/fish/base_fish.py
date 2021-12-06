@@ -14,7 +14,7 @@ class BaseFish(ABC):
 
     @name.setter
     def name(self, value):
-        if not value:
+        if value.strip() == '':
             raise ValueError("Fish name cannot be an empty string.")
         self.__name = value
 
@@ -24,7 +24,7 @@ class BaseFish(ABC):
 
     @species.setter
     def species(self, value):
-        if not value:
+        if value.strip() == '':
             raise ValueError("Fish species cannot be an empty string.")
         self.__species = value
 

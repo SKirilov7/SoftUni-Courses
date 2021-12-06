@@ -8,10 +8,11 @@ class DecorationRepository:
     def remove(self, decoration):
         if decoration in self.decorations:
             self.decorations.remove(decoration)
+            return True
+        return False
 
-    def find_by_type(self, decoration_type: str):
-        try:
-            return [decoration for decoration in self.decorations if decoration_type == decoration.__class__.__name__][0]
-        except IndexError:
-            return "None"
-
+    def find_by_type(self, decoration_type):
+        for decoration in self.decorations:
+            if decoration.__class__.__name__ == decoration_type:
+                return decoration
+        return 'None'

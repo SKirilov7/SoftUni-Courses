@@ -1,8 +1,7 @@
-from project.fish.base_fish import BaseFish
+from StructureAndFunctionality.fish.base_fish import BaseFish
 
 
 class SaltwaterFish(BaseFish):
-    AQUARIUM_PREF = 'SaltwaterAquarium'
     DEFAULT_SIZE = 5
 
     def __init__(self, name, species, price):
